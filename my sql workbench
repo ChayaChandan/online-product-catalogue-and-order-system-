@@ -1,0 +1,138 @@
+-- 1. Drop and recreate the database
+DROP DATABASE IF EXISTS online_shop_db;
+CREATE DATABASE online_shop_db;
+USE online_shop_db;
+
+-- 2. Create products table
+CREATE TABLE products (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    description TEXT,
+    price DECIMAL(10,2) NOT NULL,
+    stock INT NOT NULL DEFAULT 0,
+    category VARCHAR(50),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- 3. Insert sample products
+INSERT INTO products (name, description, price, stock, category) VALUES
+('Laptop', 'High performance laptop', 55000.00, 10, 'Electronics'),
+('Headphones', 'Noise cancelling headphones', 3000.00, 50, 'Electronics'),
+('Smartphone', 'Latest Android smartphone', 25000.00, 20, 'Electronics');
+
+-- 4. Create users table
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    role ENUM('user','admin') DEFAULT 'user',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 5. Insert sample users with bcrypt hashed passwords
+-- Example hashed passwords using bcrypt (plain text in comments)
+-- password123 => $2b$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36Y0J5kPo0nF7qfG5FPaKfK
+-- securepass => $2b$10$u1XnOYsJ6V3b3J9lzXzHee4p0j7/9DglrTzQZYzX8B5PZgIutpT5a
+-- mypassword => $2b$10$O6YzZo/ldIclKk3m4yqZfOeGm6H7kP8q7O3xQ9yXvO6c5B8d7WQH2
+-- admin123 => $2b$10$zK1sY3K8OjEo9P9p5F0DmeF2yM7f6L9mQkZ4T1jF3B6L8n1Gv2pI6
+
+INSERT INTO users (name, email, password, role) VALUES
+('Alice Johnson', 'alice@example.com', '$2b$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36Y0J5kPo0nF7qfG5FPaKfK', 'user'),
+('Bob Smith', 'bob@example.com', '$2b$10$u1XnOYsJ6V3b3J9lzXzHee4p0j7/9DglrTzQZYzX8B5PZgIutpT5a', 'user'),
+('Charlie Brown', 'charlie@example.com', '$2b$10$O6YzZo/ldIclKk3m4yqZfOeGm6H7kP8q7O3xQ9yXvO6c5B8d7WQH2', 'user'),
+('Admin', 'admin@test.com', '$2b$10$zK1sY3K8OjEo9P9p5F0DmeF2yM7f6L9mQkZ4T1jF3B6L8n1Gv2pI6', 'admin');
+
+-- 6. Create orders table
+CREATE TABLE orders (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    product_id INT NOT NULL,
+    quantity INT DEFAULT 1,
+    total_price DECIMAL(10,2) NOT NULL,
+    delivery_address VARCHAR(255) NOT NULL,
+    status ENUM('Pending','Shipped','Delivered') DEFAULT 'Pending',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+);
+
+-- 7. Insert sample orders
+INSERT INTO orders (user_id, product_id, quantity, total_price, delivery_address, status) VALUES
+(1, 1, 1, 55000.00, '123 Main St', 'Pending'),
+(2, 2, 2, 6000.00, '456 Park Ave', 'Pending'),
+(3, 3, 1, 25000.00, '789 Elm St', 'Pending');
+
+-- 8. Verify tables and data
+SHOW TABLES;
+SELECT * FROM products;
+SELECT * FROM users;
+SELECT * FROM orders;
+DESCRIBE orders;
+
+-- 9. Example queries
+SELECT id, name FROM products;
+SELECT * FROM orders WHERE user_id = 1;
+SELECT stock FROM products WHERE id = 1;
+SELECT id, name, email, role FROM users;
+
+-- 10. Update password for a specific user (bcrypt hashed)
+UPDATE users
+SET password = 'chaya
+'
+WHERE email = 'alice@example.com';
+
+SELECT id, name, email, password, role FROM users;
+DROP DATABASE IF EXISTS online_shop_db;
+CREATE DATABASE online_shop_db;
+USE online_shop_db;
+CREATE TABLE products (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    description TEXT,
+    price DECIMAL(10,2) NOT NULL,
+    stock INT NOT NULL DEFAULT 0,
+    category VARCHAR(50),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+INSERT INTO products (name, description, price, stock, category) VALUES
+('Laptop', 'High performance laptop', 55000.00, 10, 'Electronics'),
+('Headphones', 'Noise cancelling headphones', 3000.00, 50, 'Electronics'),
+('Smartphone', 'Latest Android smartphone', 25000.00, 20, 'Electronics');
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    role ENUM('user','admin') DEFAULT 'user',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+INSERT INTO users (name, email, password, role) VALUES
+('Alice Johnson', 'alice@example.com', 'password123', 'user'),
+('Bob Smith', 'bob@example.com', 'securepass', 'user'),
+('Charlie Brown', 'charlie@example.com', 'mypassword', 'user'),
+('Admin', 'admin@test.com', 'admin123', 'admin');
+CREATE TABLE orders (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    product_id INT NOT NULL,
+    quantity INT DEFAULT 1,
+    total_price DECIMAL(10,2) NOT NULL,
+    delivery_address VARCHAR(255) NOT NULL,
+    status ENUM('Pending','Shipped','Delivered') DEFAULT 'Pending',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+);
+INSERT INTO orders (user_id, product_id, quantity, total_price, delivery_address, status) VALUES
+(1, 1, 1, 55000.00, '123 Main St', 'Pending'),
+(2, 2, 2, 6000.00, '456 Park Ave', 'Pending'),
+(3, 3, 1, 25000.00, '789 Elm St', 'Pending');
+SHOW TABLES;
+SELECT * FROM products;
+SELECT * FROM users;
+SELECT * FROM orders;
