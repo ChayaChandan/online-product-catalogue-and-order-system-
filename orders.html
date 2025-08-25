@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Orders</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f9fafb; padding: 20px; }
+    h1 { color: #4f46e5; }
+    .logout, .back { background: #ef4444; color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; margin-right: 10px; }
+    .logout:hover { background: #dc2626; }
+    .back { background: #4f46e5; }
+    .back:hover { background: #4338ca; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; background: white; border-radius: 8px; overflow: hidden; }
+    th, td { padding: 12px; border-bottom: 1px solid #e5e7eb; text-align: left; }
+    th { background: #f3f4f6; }
+    tr:hover { background: #f9fafb; }
+    button.cancel { background: #ef4444; color: white; padding: 6px 10px; border: none; border-radius: 5px; cursor: pointer; }
+    button.cancel:hover { background: #dc2626; }
+    .msg { margin-top: 15px; font-size: 14px; }
+    .ok { color: green; }
+    .err { color: red; }
+  </style>
+</head>
+<body>
+  <h1>My Orders 🛒</h1>
+  <p id="welcome"></p>
+  <button class="back" onclick="goBack()">⬅ Back to Dashboard</button>
+  <button class="logout" onclick="logout()">Logout</button>
+
+  <div id="orders"></div>
+  <div id="msg" class="msg"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
