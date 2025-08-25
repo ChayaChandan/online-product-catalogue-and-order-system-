@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f9fafb; padding: 20px; }
+    h1 { color: #4f46e5; }
+    .logout { background: #ef4444; color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; }
+    .logout:hover { background: #dc2626; }
+    .products { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; margin-top: 20px; }
+    .card { background: white; padding: 16px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); }
+    .card h3 { margin: 0 0 10px; color: #111827; }
+    .card p { margin: 4px 0; font-size: 14px; color: #4b5563; }
+    .actions button { margin-right: 8px; padding: 6px 10px; border: none; border-radius: 5px; cursor: pointer; }
+    .edit { background: #3b82f6; color: white; }
+    .edit:hover { background: #2563eb; }
+    .delete { background: #ef4444; color: white; }
+    .delete:hover { background: #dc2626; }
+    .add-form { margin-top: 20px; padding: 16px; background: #fff; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); }
+    .add-form input { margin: 5px 0; padding: 8px; width: 100%; border: 1px solid #ccc; border-radius: 5px; }
+    .add-form button { margin-top: 10px; padding: 10px; background: #4f46e5; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    .add-form button:hover { background: #4338ca; }
+    .msg { margin-top: 10px; font-weight: bold; }
+    .ok { color: green; }
+    .err { color: red; }
+  </style>
+</head>
+<body>
+  <h1>Admin Dashboard</h1>
+  <button class="logout" onclick="logout()">Logout</button>
+
+  <h2>Manage Products</h2>
+  <div id="products" class="products"></div>
+
+  <h2>Add New Product</h2>
+  <form id="addProductForm" class="add-form">
+    <input type="text" id="name" placeholder="Product name" required>
+    <input type="text" id="description" placeholder="Description">
+    <input type="number" id="price" placeholder="Price" required>
+    <input type="number" id="stock" placeholder="Stock" required>
+    <button type="submit">Add Product</button>
+  </form>
+  <div id="msg" class="msg"></div>
+
+  <script src="admin.js"></script>
+</body>
+</html>
